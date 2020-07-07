@@ -1,2 +1,2 @@
 # bitstring
-A Bitstring utility for universal JavaScript
+A Bitstring module for universal JavaScript
