@@ -4,6 +4,7 @@
   "description": "Bitstring module for universal JavaScript",
   "license": "BSD-3-Clause",
   "main": "index.js",
+  "module": "main.js",
   "scripts": {
     "test": "npm run test-node",
     "test-node": "cross-env NODE_ENV=test mocha -r esm --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.js tests/*.spec.js",
@@ -20,10 +21,6 @@
   "dependencies": {
     "base64url-universal": "^1.1.0",
     "esm": "^3.2.25",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-mocha": "^2.0.1",
-    "karma-webpack": "^4.0.2",
-    "mocha": "^8.0.1",
     "pako": "^1.0.11"
   },
   "devDependencies": {
@@ -44,6 +41,10 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-sourcemap-loader": "^0.3.7",
     "mocha-lcov-reporter": "^1.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-webpack": "^4.0.2",
+    "mocha": "^8.0.1",
     "nyc": "^15.0.0",
     "webpack": "^4.29.6"
   },
@@ -63,7 +64,6 @@
     "url": "https://github.com/digitalbazaar/bitstring/issues"
   },
   "homepage": "https://github.com/digitalbazaar/bitstring",
-  "module": "main.js",
   "engines": {
     "node": ">=10.0.0"
   },
