@@ -3,6 +3,7 @@
  */
 import base64url from 'base64url-universal';
 import pako from 'pako';
+import assert from './assertions.js';
 
 const {gzip, ungzip} = pako;
 
@@ -12,11 +13,9 @@ export default class Bitstring {
       throw new Error('Only one of "length" or "buffer" must be given.');
     }
     if(length !== undefined) {
-      if(!(Number.isInteger(length) && length > 0)) {
-        throw new TypeError('"length" must be a positive integer.');
-      }
-    } else if(!(buffer instanceof Uint8Array)) {
-      throw new TypeError('"buffer" must be a Uint8Array.');
+      assert.isPositiveInteger(length, 'length');
+    } else {
+      assert.isUint8Array(buffer, 'buffer');
     }
     if(length) {
       this.bits = new Uint8Array(Math.ceil(length / 8));
@@ -28,9 +27,8 @@ export default class Bitstring {
   }
 
   set(position, on) {
-    if(typeof on !== 'boolean') {
-      throw new TypeError('"on" must be a boolean.');
-    }
+    assert.isNumber(position, 'position');
+    assert.isBoolean(on, 'on');
     const {index, bit} = _parsePosition(position, this.length);
     if(on) {
       this.bits[index] |= bit;
@@ -40,6 +38,7 @@ export default class Bitstring {
   }
 
   get(position) {
+    assert.isNumber(position, 'position');
     const {index, bit} = _parsePosition(position, this.length);
     return !!(this.bits[index] & bit);
   }
@@ -49,14 +48,15 @@ export default class Bitstring {
   }
 
   static async decodeBits({encoded}) {
+    assert.isString(encoded, 'encoded');
     return ungzip(base64url.decode(encoded));
   }
 }
 
 function _parsePosition(position, length) {
-  if(!(Number.isInteger(position) && position >= 0)) {
-    throw new Error(`Position "${position}" must be a non-negative integer.`);
-  }
+  assert.isNonNegativeInteger(position, 'position');
+  assert.isPositiveInteger(length, 'length');
+
   if(position >= length) {
     throw new Error(
       `Position "${position}" is out of range "0-${length - 1}".`);
