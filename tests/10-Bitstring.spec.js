@@ -46,6 +46,7 @@ describe('Bitstring', () => {
         err = e;
       }
       should.exist(err);
+      err.name.should.equal('TypeError');
       err.message.should.equal('"length" must be a positive integer.');
     }
   });
@@ -119,6 +120,23 @@ describe('Bitstring', () => {
     }
   });
 
+  it('should throw an error if "position" is not a number.', async () => {
+    const list = new Bitstring({length: 8});
+    const positionTypes = [undefined, 'string', {}, [], false];
+
+    for(const position of positionTypes) {
+      let err;
+      try {
+        list.get(position);
+      } catch(e) {
+        err = e;
+      }
+      should.exist(err);
+      err.name.should.equal('TypeError');
+      err.message.should.equal('"position" must be number.');
+    }
+  });
+
   it('should fail to get a bit when "position" is out of range.', async () => {
     const list = new Bitstring({length: 8});
     let err;
@@ -140,7 +158,8 @@ describe('Bitstring', () => {
       err = e;
     }
     should.exist(err);
-    err.message.should.equal('Position "-1" must be a non-negative integer.');
+    err.name.should.equal('TypeError');
+    err.message.should.equal('"position" must be a non-negative integer.');
   });
 
   it('should encode a bitstring', async () => {
@@ -154,6 +173,24 @@ describe('Bitstring', () => {
     bitstring.bits.should.be.a('Uint8Array');
     bitstring.bits.length.should.equal(1);
     encoded.should.equal('H4sIAAAAAAAAAxMCAMWeuyEBAAAA');
+  });
+
+  it('should throw an error if "encoded" is not a string.', async () => {
+    const encodedTypes = [1, undefined, {}, [], false];
+
+    for(const encoded of encodedTypes) {
+      let err;
+      let decoded;
+      try {
+        decoded = await Bitstring.decodeBits({encoded});
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(decoded);
+      should.exist(err);
+      err.name.should.equal('TypeError');
+      err.message.should.equal('"encoded" must be a string.');
+    }
   });
 
   it('should decode an encoded bit', async () => {
