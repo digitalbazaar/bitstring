@@ -3,7 +3,7 @@
  */
 import base64url from 'base64url-universal';
 import pako from 'pako';
-import assert from './assertions.js';
+import * as assert from './assertions.js';
 
 const {gzip, ungzip} = pako;
 
