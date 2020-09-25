@@ -176,9 +176,9 @@ describe('Bitstring', () => {
   });
 
   it('should throw an error if "encoded" is not a string.', async () => {
-    const encodedTypes = [1, undefined, {}, [], false];
+    const badTypes = [1, undefined, {}, [], false];
 
-    for(const encoded of encodedTypes) {
+    for(const encoded of badTypes) {
       let err;
       let decoded;
       try {
@@ -205,5 +205,41 @@ describe('Bitstring', () => {
     bitstring.bits.should.be.a('Uint8Array');
     bitstring.bits.length.should.equal(1);
     decoded.should.deep.equal(bitstring.bits);
+  });
+
+  it('should compress a bitstring', async () => {
+    const bitstring = new Bitstring({length: 8});
+    bitstring.set(1, true);
+    bitstring.set(4, true);
+
+    const compressed = await bitstring.compressBits();
+
+    bitstring.length.should.equal(8);
+    bitstring.bits.should.be.a('Uint8Array');
+    bitstring.bits.length.should.equal(1);
+    const expected = new Uint8Array([
+      31, 139, 8, 0, 0, 0, 0,
+      0, 0, 3, 19, 2, 0, 197,
+      158, 187, 33, 1, 0, 0, 0
+    ]);
+    compressed.should.deep.equal(expected);
+  });
+
+  it('should throw an error if "compressed" is not a Uint8Array.', async () => {
+    const badTypes = [1, undefined, {}, [], false];
+
+    for(const compressed of badTypes) {
+      let err;
+      let uncompressed;
+      try {
+        uncompressed = await Bitstring.uncompressBits({compressed});
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(uncompressed);
+      should.exist(err);
+      err.name.should.equal('TypeError');
+      err.message.should.equal('"compressed" must be a Uint8Array.');
+    }
   });
 });

@@ -51,6 +51,15 @@ export default class Bitstring {
     assert.isString(encoded, 'encoded');
     return ungzip(base64url.decode(encoded));
   }
+
+  async compressBits() {
+    return gzip(this.bits);
+  }
+
+  static async uncompressBits({compressed}) {
+    assert.isUint8Array(compressed, 'compressed');
+    return ungzip(compressed);
+  }
 }
 
 function _parsePosition(position, length) {
