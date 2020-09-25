@@ -193,7 +193,7 @@ describe('Bitstring', () => {
     }
   });
 
-  it('should decode an encoded bit', async () => {
+  it('should decode encoded bits', async () => {
     const bitstring = new Bitstring({length: 8});
     bitstring.set(1, true);
     bitstring.set(4, true);
@@ -241,5 +241,19 @@ describe('Bitstring', () => {
       err.name.should.equal('TypeError');
       err.message.should.equal('"compressed" must be a Uint8Array.');
     }
+  });
+
+  it('should uncompress compressed bits', async () => {
+    const bitstring = new Bitstring({length: 8});
+    bitstring.set(1, true);
+    bitstring.set(4, true);
+
+    const compressed = await bitstring.compressBits();
+    const uncompressed = await Bitstring.uncompressBits({compressed});
+
+    bitstring.length.should.equal(8);
+    bitstring.bits.should.be.a('Uint8Array');
+    bitstring.bits.length.should.equal(1);
+    uncompressed.should.deep.equal(bitstring.bits);
   });
 });
