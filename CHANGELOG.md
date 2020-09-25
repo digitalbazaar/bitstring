@@ -1,6 +1,6 @@
 # bitstring ChangeLog
 
-## 1.2.0 - 2020-09-xx
+## 1.2.0 - 2020-09-25
 
 ### Added
 - Add `compressBits` and `uncompressBits` helper functions. These functions
