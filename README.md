@@ -3,7 +3,7 @@ A Bitstring module for universal JavaScript.
 
 ## Install
 
-To install get the latest version from NPM
+To install get the latest version from NPM:
 
 ```
 npm install @digitalbazaar/bitstring
