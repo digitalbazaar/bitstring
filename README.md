@@ -52,7 +52,7 @@ await bitstring.encodeBits();
 ```
 
 ### decodeBits({encoded})
-Decodes and uncompresses a given a base64url encoded string to a Uint8Array.
+Decodes and uncompresses a given base64url encoded string to a Uint8Array.
 ```js
 await Bitstring.decodeBits({encoded});
 ```
@@ -64,7 +64,7 @@ await bitstring.compressBits();
 ```
 
 ### uncompressBits({compressed})
-This method uncompresses compressed bits.
+Uncompresses compressed bits.
 ```js
 await Bitstring.uncompressBits({compressed});
 ```
