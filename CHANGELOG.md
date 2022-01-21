@@ -1,6 +1,6 @@
 # bitstring ChangeLog
 
-## 1.2.1 - 2020-TBD
+## 1.2.1 - 2020-01-21
 
 ### Added
 - Add `README.md`.
