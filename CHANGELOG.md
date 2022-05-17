@@ -3,6 +3,8 @@
 ## 2.0.0 - 2022-xx-xx
 
 ### Changed
+- **BREAKING**: Remove default export.
+  - To update: Import named `Bitstring` class directly.
 - **BREAKING**: Convert to module (ESM).
 - **BREAKING**: Require Node.js >=14.
 - Update dependencies.
