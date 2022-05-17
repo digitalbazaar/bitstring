@@ -18,7 +18,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "base64url-universal": "^1.1.0",
+    "base64url-universal": "^2.0.0",
     "pako": "^2.0.4"
   },
   "devDependencies": {
