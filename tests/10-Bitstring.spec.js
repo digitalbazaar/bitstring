@@ -1,7 +1,7 @@
 /*!
- * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
  */
-import Bitstring from '..';
+import Bitstring from '../lib/index.js';
 
 describe('Bitstring', () => {
   it('should create an instance.', async () => {
