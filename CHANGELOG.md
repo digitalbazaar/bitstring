@@ -1,6 +1,6 @@
 # bitstring ChangeLog
 
-## 2.0.0 - 2022-xx-xx
+## 2.0.0 - 2022-06-02
 
 ### Changed
 - **BREAKING**: Remove default export.
