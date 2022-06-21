@@ -20,7 +20,7 @@ npm install
 ## Usage
 
 ```js
-import Bitstring from '@digitalbazaar/bitstring';
+import {Bitstring} from '@digitalbazaar/bitstring';
 
 // You can make a new instance by passing in a length
 const bitstring = new Bitstring({length: 10});
