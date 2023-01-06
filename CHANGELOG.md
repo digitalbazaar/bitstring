@@ -1,5 +1,17 @@
 # bitstring ChangeLog
 
+## 3.0.0 - 2023-01-dd
+
+### Added
+- Add option to use big-endian bit order within a byte of the bitstring.
+  This option provides backwards compatibility with previous versions,
+  but it is not the default because the more natural bit order is little
+  endian.
+
+### Changed
+- **BREAKING**: Default to little-endian bit order within a byte of the
+  bitstring.
+
 ## 2.0.0 - 2022-06-02
 
 ### Changed
