@@ -14,6 +14,9 @@
   little-endian byte order. This version will default to being consistently
   little-endian (for both bits and bytes).
 
+### Removed
+- **BREAKING**: Remove support for node 14, only node 16+ supported.
+
 ## 2.0.0 - 2022-06-02
 
 ### Changed

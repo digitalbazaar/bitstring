@@ -58,7 +58,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/bitstring",
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "c8": {
     "reporter": [
