@@ -4,7 +4,7 @@
 import {Bitstring} from '../lib/index.js';
 
 describe('Bitstring', () => {
-  it('should create a little endian instance by default', async () => {
+  it('should create a little endian bits instance by default', async () => {
     const buffer = Uint8Array.from([0b10000000]);
     const bitstring = new Bitstring({buffer});
 
@@ -22,9 +22,9 @@ describe('Bitstring', () => {
     bitstring.get(7).should.equal(false);
   });
 
-  it('should create a big endian instance', async () => {
+  it('should create a big endian bits instance', async () => {
     const buffer = Uint8Array.from([0b10000000]);
-    const bitstring = new Bitstring({buffer, littleEndian: false});
+    const bitstring = new Bitstring({buffer, littleEndianBits: false});
 
     bitstring.length.should.equal(8);
     bitstring.bits.should.be.a('Uint8Array');
@@ -41,7 +41,7 @@ describe('Bitstring', () => {
   });
 
   it('should set a bit to true on default instance', async () => {
-    // `littleEndian` not specified, so defaults to `true`
+    // `littleEndianBits` not specified, so defaults to `true`
     const bitstring = new Bitstring({length: 8});
     bitstring.get(0).should.equal(false);
     bitstring.get(1).should.equal(false);
@@ -65,20 +65,20 @@ describe('Bitstring', () => {
     bitstring.get(7).should.equal(false);
     bitstring.bits.should.have.length(1);
     bitstring.length.should.equal(8);
-    // little endian order
+    // little endian bit order
     bitstring.bits[0].should.equal(0b00001000);
   });
 
   const params = [{
-    name: 'little endian',
-    littleEndian: true,
+    name: 'little endian bits',
+    littleEndianBits: true,
     lowBitsBuffer: Uint8Array.from([0b11110000])
   }, {
-    name: 'big endian',
-    littleEndian: false,
+    name: 'big endian bits',
+    littleEndianBits: false,
     lowBitsBuffer: Uint8Array.from([0b00001111])
   }];
-  for(const {name, littleEndian, lowBitsBuffer} of params) {
+  for(const {name, littleEndianBits, lowBitsBuffer} of params) {
     describe(name, () => {
       it('should create an instance', async () => {
         const bitstring = new Bitstring({length: 8});
@@ -89,7 +89,7 @@ describe('Bitstring', () => {
       });
 
       it('should create an instance w/endianness param', async () => {
-        const bitstring = new Bitstring({length: 8, littleEndian});
+        const bitstring = new Bitstring({length: 8, littleEndianBits});
 
         bitstring.length.should.equal(8);
         bitstring.bits.should.be.a('Uint8Array');
@@ -137,23 +137,24 @@ describe('Bitstring', () => {
           }
         });
 
-      it('should throw error if "littleEndian" is not a boolean', async () => {
-        const options = [0, 'littleEndian', {}];
-        for(const littleEndian of options) {
-          let err;
-          try {
-            new Bitstring({length: 8, littleEndian});
-          } catch(e) {
-            err = e;
+      it('should throw error if "littleEndianBits" is not a boolean',
+        async () => {
+          const options = [0, '', {}];
+          for(const littleEndianBits of options) {
+            let err;
+            try {
+              new Bitstring({length: 8, littleEndianBits});
+            } catch(e) {
+              err = e;
+            }
+            should.exist(err);
+            err.name.should.equal('TypeError');
+            err.message.should.equal('"littleEndianBits" must be a boolean.');
           }
-          should.exist(err);
-          err.name.should.equal('TypeError');
-          err.message.should.equal('"littleEndian" must be a boolean.');
-        }
-      });
+        });
 
       it('should set a bit to true', async () => {
-        const bitstring = new Bitstring({length: 8, littleEndian});
+        const bitstring = new Bitstring({length: 8, littleEndianBits});
         bitstring.get(0).should.equal(false);
         bitstring.get(1).should.equal(false);
         bitstring.get(2).should.equal(false);
@@ -176,7 +177,7 @@ describe('Bitstring', () => {
         bitstring.get(7).should.equal(false);
         bitstring.bits.should.have.length(1);
         bitstring.length.should.equal(8);
-        if(littleEndian) {
+        if(littleEndianBits) {
           bitstring.bits[0].should.equal(0b00001000);
         } else {
           bitstring.bits[0].should.equal(0b00010000);
@@ -185,7 +186,7 @@ describe('Bitstring', () => {
 
       it('should set a bit to false', async () => {
         const buffer = Uint8Array.from([255]);
-        const bitstring = new Bitstring({buffer, littleEndian});
+        const bitstring = new Bitstring({buffer, littleEndianBits});
         bitstring.get(0).should.equal(true);
         bitstring.get(1).should.equal(true);
         bitstring.get(2).should.equal(true);
@@ -208,7 +209,7 @@ describe('Bitstring', () => {
         bitstring.get(7).should.equal(true);
         bitstring.bits.should.have.length(1);
         bitstring.length.should.equal(8);
-        if(littleEndian) {
+        if(littleEndianBits) {
           bitstring.bits[0].should.equal(0b11110111);
         } else {
           bitstring.bits[0].should.equal(0b11101111);
@@ -216,8 +217,8 @@ describe('Bitstring', () => {
       });
 
       it('should check endianness', async () => {
-        const buffer = Uint8Array.from([lowBitsBuffer]);
-        const bitstring = new Bitstring({buffer, littleEndian});
+        const buffer = Uint8Array.from([lowBitsBuffer, lowBitsBuffer]);
+        const bitstring = new Bitstring({buffer, littleEndianBits});
         bitstring.get(0).should.equal(true);
         bitstring.get(1).should.equal(true);
         bitstring.get(2).should.equal(true);
@@ -227,8 +228,21 @@ describe('Bitstring', () => {
         bitstring.get(6).should.equal(false);
         bitstring.get(7).should.equal(false);
 
-        // set the value at the seventh index (bit 8) of bitstring to true
+        // when `littleEndianBits=false`, the bytes are still in little endian
+        // order, but the bits are in big endian order
+        bitstring.get(8).should.equal(true);
+        bitstring.get(9).should.equal(true);
+        bitstring.get(10).should.equal(true);
+        bitstring.get(11).should.equal(true);
+        bitstring.get(12).should.equal(false);
+        bitstring.get(13).should.equal(false);
+        bitstring.get(14).should.equal(false);
+        bitstring.get(15).should.equal(false);
+
+        // set the value at the seventh index (bit 8) and the value at the 8th
+        // index (bit 9) of bitstring to false
         bitstring.set(7, true);
+        bitstring.set(8, false);
 
         bitstring.get(0).should.equal(true);
         bitstring.get(1).should.equal(true);
@@ -238,12 +252,23 @@ describe('Bitstring', () => {
         bitstring.get(5).should.equal(false);
         bitstring.get(6).should.equal(false);
         bitstring.get(7).should.equal(true);
-        bitstring.bits.should.have.length(1);
-        bitstring.length.should.equal(8);
-        if(littleEndian) {
+        bitstring.get(8).should.equal(false);
+        bitstring.get(9).should.equal(true);
+        bitstring.get(10).should.equal(true);
+        bitstring.get(11).should.equal(true);
+        bitstring.get(12).should.equal(false);
+        bitstring.get(13).should.equal(false);
+        bitstring.get(14).should.equal(false);
+        bitstring.get(15).should.equal(false);
+
+        bitstring.bits.should.have.length(2);
+        bitstring.length.should.equal(16);
+        if(littleEndianBits) {
           bitstring.bits[0].should.equal(0b11110001);
+          bitstring.bits[1].should.equal(0b01110000);
         } else {
           bitstring.bits[0].should.equal(0b10001111);
+          bitstring.bits[1].should.equal(0b00001110);
         }
       });
 
@@ -310,7 +335,7 @@ describe('Bitstring', () => {
         });
 
       it('should encode a bitstring', async () => {
-        const bitstring = new Bitstring({length: 8, littleEndian});
+        const bitstring = new Bitstring({length: 8, littleEndianBits});
         bitstring.set(1, true);
         bitstring.set(4, true);
 
@@ -319,10 +344,12 @@ describe('Bitstring', () => {
         bitstring.length.should.equal(8);
         bitstring.bits.should.be.a('Uint8Array');
         bitstring.bits.length.should.equal(1);
-        if(littleEndian) {
+        if(littleEndianBits) {
           encoded.should.equal('H4sIAAAAAAAAA_MAAC8mBaoBAAAA');
+          bitstring.bits[0].should.equal(0b01001000);
         } else {
           encoded.should.equal('H4sIAAAAAAAAAxMCAMWeuyEBAAAA');
+          bitstring.bits[0].should.equal(0b00010010);
         }
       });
 
@@ -345,7 +372,7 @@ describe('Bitstring', () => {
       });
 
       it('should decode encoded bits', async () => {
-        const bitstring = new Bitstring({length: 8, littleEndian});
+        const bitstring = new Bitstring({length: 8, littleEndianBits});
         bitstring.set(1, true);
         bitstring.set(4, true);
 
@@ -356,10 +383,15 @@ describe('Bitstring', () => {
         bitstring.bits.should.be.a('Uint8Array');
         bitstring.bits.length.should.equal(1);
         decoded.should.deep.equal(bitstring.bits);
+        if(littleEndianBits) {
+          bitstring.bits[0].should.equal(0b01001000);
+        } else {
+          bitstring.bits[0].should.equal(0b00010010);
+        }
       });
 
       it('should compress a bitstring', async () => {
-        const bitstring = new Bitstring({length: 8, littleEndian});
+        const bitstring = new Bitstring({length: 8, littleEndianBits});
         bitstring.set(1, true);
         bitstring.set(4, true);
 
@@ -368,7 +400,7 @@ describe('Bitstring', () => {
         bitstring.length.should.equal(8);
         bitstring.bits.should.be.a('Uint8Array');
         bitstring.bits.length.should.equal(1);
-        if(littleEndian) {
+        if(littleEndianBits) {
           const expected = new Uint8Array([
             31, 139, 8, 0, 0, 0, 0,
             0, 0, 3, 243, 0, 0, 47,
