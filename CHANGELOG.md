@@ -6,11 +6,13 @@
 - Add option to use big-endian bit order within a byte of the bitstring.
   This option provides backwards compatibility with previous versions,
   but it is not the default because the more natural bit order is little
-  endian.
+  endian (which also matches the byte order, which is little endian).
 
 ### Changed
 - **BREAKING**: Default to little-endian bit order within a byte of the
-  bitstring.
+  bitstring. Previous versions would use big-endian bit order with
+  little-endian byte order. This version will default to being consistently
+  little-endian (for both bits and bytes).
 
 ## 2.0.0 - 2022-06-02
 
