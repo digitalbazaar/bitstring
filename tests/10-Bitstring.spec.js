@@ -320,8 +320,7 @@ describe('Bitstring', () => {
         bitstring.bits.should.be.a('Uint8Array');
         bitstring.bits.length.should.equal(1);
         if(littleEndian) {
-          // FIXME:
-          encoded.should.equal('H4sIAAAAAAAAAxMCAMWeuyEBAAAA');
+          encoded.should.equal('H4sIAAAAAAAAA_MAAC8mBaoBAAAA');
         } else {
           encoded.should.equal('H4sIAAAAAAAAAxMCAMWeuyEBAAAA');
         }
@@ -370,11 +369,10 @@ describe('Bitstring', () => {
         bitstring.bits.should.be.a('Uint8Array');
         bitstring.bits.length.should.equal(1);
         if(littleEndian) {
-          // FIXME:
           const expected = new Uint8Array([
             31, 139, 8, 0, 0, 0, 0,
-            0, 0, 3, 19, 2, 0, 197,
-            158, 187, 33, 1, 0, 0, 0
+            0, 0, 3, 243, 0, 0, 47,
+            38, 5, 170, 1, 0, 0, 0
           ]);
           compressed.should.deep.equal(expected);
         } else {
