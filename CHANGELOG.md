@@ -1,6 +1,6 @@
 # bitstring ChangeLog
 
-## 3.1.0 - 2023-01-dd
+## 3.1.0 - 2023-01-08
 
 ### Changed
 - Rename `littleEndianBits` to `leftToRightIndexing` to try and avoid
