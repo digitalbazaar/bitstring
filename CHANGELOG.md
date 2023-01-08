@@ -3,10 +3,10 @@
 ## 3.0.0 - 2023-01-08
 
 ### Added
-- Add option to use right to left bit order within a byte of the bitstring.
-  This option provides backwards compatibility with previous versions,
-  but it is not the default because the more natural bit order is left
-  to right (which also matches the byte order, which is left to right).
+- Add option `littleEndianBits` to use right to left bit order within a byte
+  of the bitstring. This option provides backwards compatibility with previous
+  versions. This name has led to confusion and will be renamed in the next
+  minor release w/backwards-compatibility support for using it.
 
 ### Changed
 - **BREAKING**: Default to left to right bit indexing within a byte of the
