@@ -1,5 +1,14 @@
 # bitstring ChangeLog
 
+## 3.1.0 - 2023-01-dd
+
+### Changed
+- Rename `littleEndianBits` to `leftToRightIndexing` to try and avoid
+  confusion over indexing order. There are two (opposite!) interpretations
+  of the meaning of "big" or "little" endianness for bits (as opposed to
+  bytes where it is more clear). Therefore, that terminology is to be
+  avoided. The old parameter name can still be used, but is deprecated.
+
 ## 3.0.0 - 2023-01-08
 
 ### Added
