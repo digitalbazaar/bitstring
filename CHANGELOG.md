@@ -1,6 +1,6 @@
 # bitstring ChangeLog
 
-## 3.0.0 - 2023-01-dd
+## 3.0.0 - 2023-01-08
 
 ### Added
 - Add option to use big-endian bit order within a byte of the bitstring.
