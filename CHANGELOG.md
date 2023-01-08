@@ -3,16 +3,18 @@
 ## 3.0.0 - 2023-01-08
 
 ### Added
-- Add option to use big-endian bit order within a byte of the bitstring.
+- Add option to use right to left bit order within a byte of the bitstring.
   This option provides backwards compatibility with previous versions,
-  but it is not the default because the more natural bit order is little
-  endian (which also matches the byte order, which is little endian).
+  but it is not the default because the more natural bit order is left
+  to right (which also matches the byte order, which is left to right).
 
 ### Changed
-- **BREAKING**: Default to little-endian bit order within a byte of the
-  bitstring. Previous versions would use big-endian bit order with
-  little-endian byte order. This version will default to being consistently
-  little-endian (for both bits and bytes).
+- **BREAKING**: Default to left to right bit indexing within a byte of the
+  bitstring. Previous versions would use right to left bit order with
+  big-endian byte order (least significant byte index is at the most
+  significant address, i.e., first). This version will default to being
+  consistently left to right with indexing (largest and leftmost address
+  is the lowest index for both bits and bytes).
 
 ### Removed
 - **BREAKING**: Remove support for node 14, only node 16+ supported.
